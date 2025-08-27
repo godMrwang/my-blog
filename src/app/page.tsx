@@ -6,6 +6,7 @@ export default function Home() {
 
   return (
     <main className="max-w-2xl mx-auto p-4">
+      <meta name="google-site-verification" content="HpRZvaRYZEd3eS9YEOM3t5TR8zG0tHRSUO12KSZftn8" />
       <h1 className="text-3xl font-bold mb-4">我的博客</h1>
       <ul>
         {allPostsData.map(({ id, date, title }) => (

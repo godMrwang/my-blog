@@ -1,5 +1,5 @@
 ---
-title: "Hello Next"
+title: "Hello Google"
 date: "2025-08-01"
 ---
 

@@ -10,7 +10,8 @@ export function generateStaticParams() {
 }
 
 // 异步 Page 组件
-export default async function PostPage({ params }: { params: { id: string } }) {
+export default async function PostPage(props: unknown) {
+  const { params } = props as { params: { id: string } };
   const { id } = params;
   const matterResult = getPostData(id);
 

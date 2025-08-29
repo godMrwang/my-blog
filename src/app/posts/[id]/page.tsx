@@ -1,12 +1,8 @@
-// @ts-ignore
 import { getPostData, getSortedPostsData } from "../../../lib/posts";
 import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
 
-type PostPageProps = {
-  params: { id: string };
-};
 
 // 静态生成所有文章页面
 export function generateStaticParams() {

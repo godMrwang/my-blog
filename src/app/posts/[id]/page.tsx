@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return allPosts.map((post) => ({ id: post.id }));
 }
 
-// @ts-expect-error
+// @ts-expect-error  Next.js PageProps 类型与 params 不匹配
 export default function PostPage({ params }: { params: { id: string } }) {
   const { id } = params;
 

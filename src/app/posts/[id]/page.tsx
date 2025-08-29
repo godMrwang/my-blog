@@ -15,8 +15,7 @@ export function generateStaticParams() {
 
 // 异步 Server Component
 export default async function PostPage({ params }: PostPageProps) {
-  // ⚡ 这里确保先获取 params
-  const { id } = await params; // <-- 关键修改
+  const { id } = params;  // ✅ 不要 await
 
   const matterResult = getPostData(id);
 

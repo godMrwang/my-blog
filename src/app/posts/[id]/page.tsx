@@ -10,6 +10,7 @@ export function generateStaticParams() {
   return allPosts.map((post) => ({ id: post.id }));
 }
 
+// @ts-expect-error
 export default function PostPage({ params }: { params: { id: string } }) {
   const { id } = params;
 

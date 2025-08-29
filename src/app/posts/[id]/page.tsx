@@ -1,3 +1,4 @@
+// @ts-ignore
 import { getPostData, getSortedPostsData } from "../../../lib/posts";
 import { remark } from "remark";
 import html from "remark-html";
@@ -13,16 +14,13 @@ export function generateStaticParams() {
   return allPosts.map((post) => ({ id: post.id }));
 }
 
-// 异步 Server Component
-export default async function PostPage({ params }: PostPageProps) {
-  const { id } = params;  // ✅ 不要 await
+export default function PostPage({ params }: { params: { id: string } }) {
+  const { id } = params;
 
   const matterResult = getPostData(id);
 
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
-  const contentHtml = processedContent.toString();
+  // 同步渲染 Markdown
+  const contentHtml = remark().use(html).processSync(matterResult.content).toString();
 
   return (
     <main className="max-w-2xl mx-auto p-4">

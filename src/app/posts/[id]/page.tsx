@@ -3,21 +3,19 @@ import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
 
-
-// 静态生成所有文章页面
+// 生成所有静态文章路径
 export function generateStaticParams() {
   const allPosts = getSortedPostsData();
-  return allPosts.map((post) => ({ id: post.id }));
+  return allPosts.map(post => ({ id: post.id }));
 }
 
-// @ts-expect-error  Next.js PageProps 类型与 params 不匹配
-export default function PostPage({ params }: { params: { id: string } }) {
+// 异步 Page 组件
+export default async function PostPage({ params }: { params: { id: string } }) {
   const { id } = params;
-
   const matterResult = getPostData(id);
 
-  // 同步渲染 Markdown
-  const contentHtml = remark().use(html).processSync(matterResult.content).toString();
+  const processedContent = await remark().use(html).process(matterResult.content);
+  const contentHtml = processedContent.toString();
 
   return (
     <main className="max-w-2xl mx-auto p-4">

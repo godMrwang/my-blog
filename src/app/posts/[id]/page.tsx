@@ -4,21 +4,16 @@ import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
 
-// 生成静态参数
+// 生成静态路径
 export function generateStaticParams() {
   const allPosts: PostMeta[] = getSortedPostsData();
   return allPosts.map((post) => ({ id: post.id }));
 }
 
-// 定义 Page Props 类型
-interface PostPageProps {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-// 异步页面组件
-export default async function PostPage({ params }: PostPageProps) {
+// 异步 Page 组件
+export default async function PostPage({ params }: { params: { id: string } }) {
   const { id } = params;
+
   const postData = getPostData(id);
 
   const processedContent = await remark().use(html).process(postData.content);

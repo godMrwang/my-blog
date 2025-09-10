@@ -3,21 +3,35 @@ import { getPostData, getSortedPostsData, PostMeta } from "@/lib/posts";
 import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
-// 生成静态路径
 export function generateStaticParams() {
   const allPosts: PostMeta[] = getSortedPostsData();
   return allPosts.map((post) => ({ id: post.id }));
 }
 
-// 异步 Page 组件
-export default async function PostPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: { id: string };
+}
+
+export default function PostPage({ params }: PageProps) {
   const { id } = params;
 
-  const postData = getPostData(id);
+  // 在组件内部处理异步逻辑
+  const [contentHtml, setContentHtml] = useState<string>("");
+  const [postData, setPostData] = useState<{ title: string; date: string; content: string } | null>(null);
 
-  const processedContent = await remark().use(html).process(postData.content);
-  const contentHtml = processedContent.toString();
+  require("react").useEffect(() => {
+    async function fetchPost() {
+      const data = getPostData(id);
+      const processedContent = await remark().use(html).process(data.content);
+      setPostData(data);
+      setContentHtml(processedContent.toString());
+    }
+    fetchPost();
+  }, [id]);
+
+  if (!postData) return <div>加载中...</div>;
 
   return (
     <main className="max-w-2xl mx-auto p-4">

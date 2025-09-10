@@ -4,20 +4,23 @@ import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
 
-// 生成所有静态文章路径
+// 生成静态参数
 export function generateStaticParams() {
   const allPosts: PostMeta[] = getSortedPostsData();
   return allPosts.map((post) => ({ id: post.id }));
 }
 
-// 异步 Page 组件
-export default async function PostPage(props: { params: { id: string } }) {
-  const { id } = props.params;
+// 定义 Page Props 类型
+interface PostPageProps {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
 
-  // 获取文章数据
+// 异步页面组件
+export default async function PostPage({ params }: PostPageProps) {
+  const { id } = params;
   const postData = getPostData(id);
 
-  // Markdown 转 HTML
   const processedContent = await remark().use(html).process(postData.content);
   const contentHtml = processedContent.toString();
 

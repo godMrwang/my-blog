@@ -24,3 +24,10 @@ export function getSortedPostsData(): PostMeta[] {
 
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1))
 }
+
+export function getPostData(id: string) {
+  const filePath = path.join(process.cwd(), "posts", `${id}.md`)
+  const fileContents = fs.readFileSync(filePath, "utf8")
+  const { data, content } = matter(fileContents)
+  return { id, content, ...data }
+}
